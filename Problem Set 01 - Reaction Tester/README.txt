@@ -1,5 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/GXlEuyXQ)
-Starter Code for Reaction Timer 
-Run npm install to install all dependencies 
-The above uses package.json to build the project
-Note .gitignore is set to ignore node_modules
+## Instruction
+You need to develop a reaction timer app to test reaction times and record the fastest. You will need a server that serves up a web page.  Think through how the timer is “fair”. Consider how to deal with someone who rapidly keeps clicking, or uses some other mechanism to “cheat” your system. 
+I suggest you start with a very simple system with say one button that changes color after some random time between 1 and 20 seconds. Think through how you will transmit the timing from the web page to the server and record it there. 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reaction Timer</title>
+    <style>
+        #reaction-button {
+            width: 150px;
+            height: 50px;
+            background-color: grey;
+        }
+
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-content">
+        <h1>Reaction Timer</h1>
+        <button id="start-button">Start</button>
+        <button id="reaction-button" disabled>Click when green</button>
+        <p id="reaction-time"></p>
+    </div>
+    <script>
+        const startButton = document.getElementById('start-button');
+        const reactionButton = document.getElementById('reaction-button');
+        const reactionTimeElement = document.getElementById('reaction-time');
+        let startTime;
+
+        function startTimer() {
+            const delay = Math.random() * 19000 + 1000; // Random delay between 1 and 20 seconds
+            setTimeout(() => {
+                reactionButton.style.backgroundColor = 'DarkSeaGreen';
+                reactionButton.disabled = false;
+                startTime = Date.now();
+            }, delay);
+        }
+
+        startButton.addEventListener('click', () => {
+            reactionButton.style.backgroundColor = 'IndianRed';
+            startButton.disabled = true;
+            startTimer();
+        });
+
+        reactionButton.addEventListener('click', () => {
+            const reactionTime = Date.now() - startTime;
+            reactionButton.style.backgroundColor = 'IndianRed';
+            reactionButton.disabled = true;
+            fetch('/record-time', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ time: reactionTime })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    reactionTimeElement.textContent = `Reaction time: ${data.reactionTime} ms. Fastest time: ${data.fastestTime} ms.`;
+                    startButton.disabled = false;
+                });
+        });
+    </script>
+</body>
+
+</html>

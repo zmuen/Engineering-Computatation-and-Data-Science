@@ -48,23 +48,30 @@
             startTimer();
         });
 
-        reactionButton.addEventListener('click', () => {
+        recationButton.addEventListener('click', async () => {
             const reactionTime = Date.now() - startTime;
             reactionButton.style.backgroundColor = 'IndianRed';
             reactionButton.disabled = true;
-            fetch('/record-time', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ time: reactionTime })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    reactionTimeElement.textContent = `Reaction time: ${data.reactionTime} ms. Fastest time: ${data.fastestTime} ms.`;
-                    startButton.disabled = false;
+            try {
+                let response = await fetch('/record-time', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ time: reactionTime })
                 });
+                if (response.ok) {
+                    const data = await response.json();
+                    injectTime(data);
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation', error);
+            }
         });
+        let data = response.json();
+        reactonTimeElement.textContent = `Reaction time: ${data.reactionTime} ms. Fastest time: ${data.fastestTime} ms.`;
+        startButton.disabled = false;
+
     </script>
 </body>
 
